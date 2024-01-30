@@ -1,0 +1,32 @@
+{% extends "view.html" %}
+{% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% block content %}
+
+  <div class="container mt-5">
+    <a href="{% url 'view_messages' %}" class="btn btn-primary mt-4"><i class="fa fa-eye" style="color: black; font-size: 24px;"></i>View Messages</a><br><br><br>
+    <h2>Manager Profiles</h2>
+    <div class="row">
+      {% for manager_profile in manager_profiles %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <img src="{{ manager_profile.Profile_Image.url }}" class="card-img-top" alt="{{ manager_profile.user.username }}" height="200">
+            <div class="card-body">
+              <h5 class="card-title">{{ manager_profile.user.username }}</h5>
+              <p class="card-text"><strong>Address:</strong> {{ manager_profile.Address }}</p>
+              <p class="card-text"><strong>Phone Number:</strong> {{ manager_profile.Phone_Number }}</p>
+              <p class="card-text"><strong>Designation:</strong> {{ manager_profile.Designation }}</p>
+              <p class="my-3 font-weight-bold">Send Message to Manager</p>
+              <form action="{% url 'send_message' manager_profile.user.id %}" class="d-flex align-items-center" method="post">
+                {% csrf_token %}
+                <input type="text" class="w-75 border-secondary mr-2 p-2" name="message" placeholder="Enter message here..">
+                <button class="btn btn-primary">Send</button>
+            </form>
+            
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

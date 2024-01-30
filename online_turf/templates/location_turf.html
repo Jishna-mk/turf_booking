@@ -1,0 +1,45 @@
+{% extends "view.html" %}
+
+{% block content %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner:wght@700&display=swap" rel="stylesheet">
+   
+
+    {% for location in location_turfs %}
+    <h1 class="mt-5 display-5 text-capitalize text-center">
+        <span class="text-primary text-center">Get</span> locations from {{ location.location_name }}
+    </h1>
+        
+        {% if location.turfs %}
+            <div class="container mt-3">
+                <div class="row">
+                    {% for turf in location.turfs %}
+                        <div class="col-lg my-2">
+                            <div class="card" style="width: 20rem;">
+                                {% if turf.Turf_image %}
+                                    <img src="{{ turf.Turf_image.url }}" class="card-img-top" alt="turf"
+                                         style="height: 250px;">
+                                {% endif %}
+                                <div class="card-body">
+                                    <p class="card-text"
+                                       style="color: darkgreen; font-family: 'Edu TAS Beginner', cursive; font-size: 2rem; text-transform: capitalize;">
+                                        {{ turf.Turf_name }}
+                                    </p>
+                                    <h5 class="card-title">{{ turf.Turf_caption }}</h5>
+                                    <p class="card-text">{{ turf.Turf_price }}</p>
+                                    <a href="{%url 'view_detail' turf.Turf_ID %}" class="btn btn-secondary">View Turf</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <p>No Turfs available in this location</p>
+        {% endif %}
+    {% empty %}
+        <p>No Turfs available in this location</p>
+    {% endfor %}
+
+{% endblock %}

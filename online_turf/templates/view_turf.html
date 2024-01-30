@@ -1,0 +1,155 @@
+{%extends "view.html"%}
+{%block content%}
+<!-- <p>View turf by your preferable location</p> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha384-kmS5oP4UDtVd0ZnzW0uW5fV5q7pNB8O9aTfAJVAW9WQLA0aPee5+UqXrfP1SMbp" crossorigin="anonymous">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner:wght@700&display=swap" rel="stylesheet">
+<h1 class="mt-5 display-5 text-capitalize text-center">
+  <span class="text-primary text-center">Get</span> Details</h1>
+  <div class="container">
+    <div class="row">
+        
+        <div class="col-md-6">
+            <!-- Button with a link to the weather page -->
+            <a href="{%url 'climate' %}" class="btn  btn-lg" style="background-color: rgb(154, 249, 193);"><i class="fas fa-cloud"></i>Check Weather</a>
+        </div>
+    </div>
+</div>
+
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-lg my-2 d-flex align-items-center">
+        {% if turf.Turf_image %}
+          <img src="{{ turf.Turf_image.url }}" class="img-fluid" alt="Turf Image" style="max-height: 300px; width: 50%;">
+        {% endif %}
+        <div class="text-center ml-5">
+          <p style="color: darkgreen; font-family: 'Edu TAS Beginner', cursive; font-size: 2rem; text-transform: capitalize;">{{turf.Turf_name}}</p>
+          <h5>{{turf.Turf_caption}}</h5>
+          <p>Price :₹{{turf.Turf_price}}</p>
+          <p>Address  :{{turf.Turf_address}}</p>
+          <p>Area :{{turf.Turf_area}}</p>
+          <a href="{% url 'view_managers' %}" class="btn btn-primary mt-4">Enquire Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% load tz %}
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  
+
+    .book_form {
+      box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+      padding: 10px;
+      max-width: 500px;
+      margin: auto; /* Center horizontally */
+    }
+
+  h2 {
+    color: #333;
+  }
+
+  form {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  select,
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  button {
+    background-color: #282d32;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #0e1011;
+  }
+
+  .alert {
+    position: fixed;
+    z-index: 90;
+    right: 80px;
+    top: 10px;
+  }
+</style>
+<h1 class="mt-5 display-5 text-capitalize text-center">
+  <span class="text-primary text-center">Book For</span> {{ turf.Turf_name }} Turf
+</h1>
+
+<br><br>
+  
+  {% if error_message %}
+  <div class="alert alert-danger alert-dismissible fade show" style="position: fixed;z-index: 90;right:80px;top:30px"
+    role="alert">
+    <strong>{{ error_message }} !!!</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+  {% endif %}
+<div class="book_form justify-content-center align-items-center" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px; padding: 10px; max-width: 500px;">
+  <form method="post" action="{% url 'book_turf' turf.Turf_ID %}">
+    {% csrf_token %}
+
+    <label for="id_game">Game:</label>
+    <select name="game" id="id_game">
+      <option value="cricket">Cricket</option>
+      <option value="football">Football</option>
+      <option value="badminton">Badminton</option>
+      <option value="fitness">Fitness</option>
+      <option value="coaching">Coaching</option>
+    </select>
+<br>
+    <label for="id_date">Date:</label>
+    <input type="date" name="date" id="id_date" required>
+<br>
+    <label for="id_start_time">Start Time:</label>
+    <input type="time" name="start_time" id="id_start_time" required>
+
+    <input type="hidden" name="timezone_offset" id="timezone_offset">
+
+  <br>  
+
+    <label for="id_end_time">End Time:</label>
+    <input type="time" name="end_time" id="id_end_time" required>
+
+  <br>
+
+    <label for="id_phone_number">Phone Number:</label>
+    <input type="text" name="phone_number" id="id_phone_number" required>
+
+    <br>
+
+    
+
+    <button type="submit">Book Now</button>
+  </form>
+</div>
+  <script>
+    // Get the current timezone offset and set it as the value of the hidden input
+    document.getElementById('timezone_offset').value = new Date().getTimezoneOffset();
+</script>
+
+
+{%endblock%}

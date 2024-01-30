@@ -1,0 +1,32 @@
+{% block content %}
+  <h2>Manager's Messages with {{ manager.username }}</h2>
+
+  <div id="messages-container">
+    {% for message in received_messages %}
+      <p>
+        {{ message.sender.username }}: {{ message.content }} - {{ message.timestamp }}
+        <a href="{% url 'reply_message' sender_id=message.sender.id %}" class="reply-btn">Reply</a>
+      </p>
+    {% endfor %}
+    {% for message in sent_messages %}
+    <p>
+      You: {{ message.content }} - {{ message.timestamp }}
+    </p>
+  {% endfor %}
+    {% for message in sent_messages %}
+      <p>
+        You: {{ message.content }} - {{ message.timestamp }}
+        <a href="{% url 'delete_message' message_id=message.id %}" class="delete-btn">Delete</a>
+      </p>
+    {% endfor %}
+  </div>
+
+  {% if form %}
+    <h2>Reply to {{ reply_username }}</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Send</button>
+    </form>
+  {% endif %}
+{% endblock %}
